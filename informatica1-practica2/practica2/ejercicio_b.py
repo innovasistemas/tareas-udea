@@ -1,3 +1,16 @@
+# ----------------------------------------
+# Programa: Ejercicio b)
+# ----------------------------------------
+
+# ----------------------------------------
+# Definición de variables
+# ----------------------------------------
+# x1, x2, y1, y2: Puntos en los ejes que permiten determinar las respectivas
+# coordenadas
+# d: distancia entre los puntos (x1, y1) y (x2, y2) 
+
+
+
 # Datos de entrada
 print("Punto 1 de coordenadas (x1, y1)")
 x1 = float(input("x1: "))

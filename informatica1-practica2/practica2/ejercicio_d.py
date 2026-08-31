@@ -1,3 +1,13 @@
+# ----------------------------------------
+# Programa: Ejercicio d)
+# ----------------------------------------
+
+# ----------------------------------------
+# Definición de variables
+# ----------------------------------------
+# t: Tiempo motor en segundos
+# tm: Tiempo en minutos
+
 # Datos de entrada
 t = int(input("Tiempo motor (s): "))
 

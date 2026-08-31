@@ -1,13 +1,16 @@
-import math
+print("Este programa sirve para calcular el area y el perimetro de un circulo")
 
-# Datos de entrada: Solicitar el radio al usuario
-r = float(input("Radio circunferencia: "))
+# 1. pido el valor de r
+r = float(input("Ingrese el valor de r: "))
 
-# Calcular el perímetro y el área de la circunferencia
-P = 2 * math.pi * r
-A = 2 * math.pi * r ** 2
+# 2. calcular el area
+pi = 3.1416
+a = pi * r ** 2
 
-# Dados de salida: Mostrar los resultados encontrados
-print(f"Radio ingresado: {r}")
-print(f"Perímetro: {P} Unid")
-print(f"Área: {A}")
+# 3. calcular el perimetro
+p = 2 * pi * r
+
+# 4. mostrar el resultado
+print("El area y el perimetro de un circulo con radio ", r, " son:")
+print("A = ", a)
+print("p = ", p)
