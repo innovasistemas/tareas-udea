@@ -6,6 +6,7 @@
 # Definición de variables
 # ----------------------------------------
 # h: Altura del triángulo rectángulo
+# i: Variable iteradora
 
 h = int(input("Altura del triángulo rectángulo: "))
 if h > 0:
@@ -18,6 +19,6 @@ else:
     print("\n")
     print("\033[31m")
     print("-" * 38)
-    print("¡Error! La altua debe ser mayor a cero")
+    print("¡Error! La altura debe ser mayor a cero")
     print("-" * 38)
     print("\033[0m")
