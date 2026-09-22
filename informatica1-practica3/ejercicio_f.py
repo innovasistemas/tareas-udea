@@ -8,6 +8,10 @@
 # h: Altura del triángulo rectángulo
 # i: Variable iteradora
 
+print("\n\033[32m", "-" * 44, "\033[0m")
+print("\033[32m", "-" * 11, "Triángulo Rectángulo" ,"-" * 11, "\033[0m")
+print("\033[32m", "-" * 44, "\033[0m")
+
 h = int(input("Altura del triángulo rectángulo: "))
 if h > 0:
     print("\033[33m", end = "")
