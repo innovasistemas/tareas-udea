@@ -6,7 +6,7 @@
 # Definición de variables
 # ----------------------------------------
 # mensaje: Texto ingresado por teclado para cifrar
-# texto: Guarda el mensaje originaly se le añade un espacio al final
+# texto: Guarda el mensaje original y se le añade un espacio al final
 # texto_encriptado: Guarda el texto final cifrado
 # n: Guarda la longitud del mensaje
 # i: Variable iteradora de la cadena. Marca el límite superior de las subcadenas
