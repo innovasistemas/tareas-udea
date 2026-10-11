@@ -1,5 +1,9 @@
 import random
 import utils.colors as color
+import utils.validations as valid
+
+symbol = []
+move_counter = 0
 
 def printIntro(introFile = "") -> None:
     '''
@@ -35,9 +39,10 @@ def printIntro(introFile = "") -> None:
         print(color.GREEN)
         print(content)
         print(color.YELLOW)
-        print("\n", "=" * 50, "\n", "=" * 50, "\n")
-        print(color.WHITE)
+        print("\n", "=" * 50, "\n", "=" * 50, "\n", color.WHITE)
+        # print()
         file.close()
+        valid.message_system("Desarrollado por: Mayker Escudero - Jaime Montoya")
     except FileNotFoundError as e:
         print("Error al abrir el archivo:", e)
 
@@ -48,9 +53,19 @@ def drawBoard(board):
     # Board: Lista de strings que representa el estado del tablero
 
     # Desarrolle el cuerpo de la función aquí...
-    pass
+    print("-" * 20)
+    print("Tablero")
+    print("-" * 20)
 
-def inputPlayerLetter():
+    print(board[6] + "|" + board[7] + "|" + board[8])
+    print("-+-+--+-+-")
+    print(board[3] + "|" + board[4] + "|" + board[5])
+    print("-+-+--+-+-")
+    print(board[0] + "|" + board[1] + "|" + board[2])
+    print("-" * 20)
+
+
+def inputPlayerLetter() -> list:
     # Esta función le permite escoger al usuario entre la letra "X" y la letra "O".
 
     # retorna una lista de strings donde la letra escogida por el usuario
@@ -58,8 +73,25 @@ def inputPlayerLetter():
     # ocupa la segunda posición.
 
     # Desarrolle el cuerpo de la función aquí...
-    pass
+    
+    char = ""
+    while char != "X" and char != "O":
+        print(color.GREEN + "-" * 20 + "\n" + "Seleccionar símbolo" + 
+              "\n" + "-" * 20 + color.WHITE)
+        char = input("Símbolo a usar [X/O]: ").upper()
+        if char != "X" and char != "O":
+            valid.message_system("Debe usar uno de los símbolos 'X' u 'O' para jugar. " \
+                "Intente de nuevo ", "error")
+        else:
+            if char == "X":
+                symbol.append("X")
+                symbol.append("O")
+            else: 
+                symbol.append("O")
+                symbol.append("X")
+    return symbol
 
+    
 
 def whoGoesFirst() -> str:
     # Esta función escoge de forma aleatoria quien inicial el juego.
@@ -70,10 +102,7 @@ def whoGoesFirst() -> str:
     # Desarrolle el cuerpo de la función aquí...
     # Se genera un número aleatorio entero: 1 (Usuario) o 2 (Computadora) 
     rand = random.randint(1, 2)
-    if rand == 1:
-        return "Usuario"
-    else:
-        return "Computadora"
+    return "Usuario" if rand == 1 else "Computadora"
 
 
 def makeMove(board, letter, move):
@@ -85,7 +114,10 @@ def makeMove(board, letter, move):
     # move: Es el número de la casilla donde se desea poner la marca.
 
     # Desarrolle el cuerpo de la función aquí...
-    pass
+    global move_counter
+    board[move] = f' {letter} '
+    move_counter += 1
+
 
 def isWinner(board, letter):
     # Esta función debe verificar si hay una jugada ganadora en el tablero.
@@ -100,7 +132,8 @@ def isWinner(board, letter):
     # Desarrolle el cuerpo de la función aquí...
     pass
 
-def isSpaceFree(board, move):
+
+def isSpaceFree(board, move) -> bool:
     # Esta función verifica si hay una casilla vacía en el tablero.
 
     # Argumentos:
@@ -111,9 +144,10 @@ def isSpaceFree(board, move):
     # en caso contrario, debe retornar el valor lógico False.
 
     # Desarrolle el cuerpo de la función aquí...
-    pass
+    return True if board[move] == '   ' else False
+        
 
-def getPlayerMove(board):
+def getPlayerMove(board) -> int:
     # Esta función le pide al usuario que ingrese el número de la casilla
     # que quiere marcar.
 
@@ -122,10 +156,19 @@ def getPlayerMove(board):
 
     # Esta función retorna el número de la casilla seleccionada por el usuario.
 
-
     # Desarrolle el cuerpo de la función aquí...
-    pass
+    move = 0
+    if move_counter < 9:
+        while move < 1 or move > 9 or not isSpaceFree(board, move - 1): 
+            move = int(input("Casilla (celda 1-9): "))
+            if move < 1 or move > 9 or not isSpaceFree(board, move - 1):
+                valid.message_system("Casilla no válida, Intente de nuevo", "error")
+    else:
+        valid.message_system("Tablero lleno", "error")
+    return move
+   
 
+    
 def chooseRandomMoveFromList(board, movesList):
     # Esta función escoge de forma aleatoria una casilla vacía del tablero.
 
