@@ -1,21 +1,22 @@
 import functions.triqui as tr
 import utils.colors as color
-import utils.validations as valid
+import utils.util as utl
+
+BOARD_ORIGIN = ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ']
+BOARD_HELP = [' 1 ', ' 2 ', ' 3 ', ' 4 ', ' 5 ', ' 6 ', ' 7 ', ' 8 ', ' 9 ']
+board = BOARD_ORIGIN.copy()
+resp = "S" 
+stat = ['', 0, 0, 0]
 
 # 1. Mostrar mensaje de bienvenida
 tr.printIntro("assets/files/intro.txt")
-# board_fill = [' X ', ' X ', ' O ', ' O ', ' X ', ' O ', ' O ', ' X ', ' O ']
-board = ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ']
-board_help = [' 1 ', ' 2 ', ' 3 ', ' 4 ', ' 5 ', ' 6 ', ' 7 ', ' 8 ', ' 9 ']
 
-valid.message_system("Ayuda. Ingrese valores en celdas vacías siguiendo el teclado numérico")
-tr.drawBoard(board_help)
+stat[0] = input("Nombre usuario: ")
 
-resp = "S" 
 while resp == "S":
-
     # 2. Crear el tablero
-
+    utl.system_message("Ayuda. Ingrese valores en celdas vacías siguiendo el teclado numérico")
+    tr.drawBoard(BOARD_HELP)
 
     # 3. El usuario debe seleccionar la marca
     symbol = tr.inputPlayerLetter()
@@ -23,10 +24,10 @@ while resp == "S":
     # 4. Quién va primero el usuario o la computadora?
     # Indica quién tiene el turno para jugar, el usuario o la computadora.
     turn = tr.whoGoesFirst()
-    valid.message_system(turn + " inicia el juego [Usuario: " + symbol[0] + 
-                         " | Computador: " + symbol[1] + "] ", "information")
+    utl.system_message("Sorteo\n" + turn + " inicia el juego [Usuario " +
+                       stat[0] + ": " + symbol[0] + 
+                       " | Computadora: " + symbol[1] + "] ", "information")
     
-
     playing = True # El juego ha iniciado
 
     while playing:
@@ -57,7 +58,10 @@ while resp == "S":
         else: # 6. Turno de la computadora.
 
             # a. Computadora hace jugada.
+            move = tr.getComputerMove(board, symbol[1])
+
             # b. Actualizar el tablero.
+            tr.makeMove(board, symbol[1], move)
 
             # c. Verificar si la computadora ha ganado el juego.
             #    Si si, mostrar tablero, mostrar mensaje indicando al usuario que ha perdido y terminar el juego.
@@ -70,7 +74,11 @@ while resp == "S":
 
             turn = 'Usuario'
         
-        playing = False
+        if tr.isBoardFull(board):
+            tr.drawBoard(board)
+            tr.symbol.clear()
+            board = BOARD_ORIGIN.copy()
+            playing = False
 
     # 7. Preguntar si el usuario quiere jugar una vez mas
     #    Si no, finalizar el programa.
@@ -78,6 +86,7 @@ while resp == "S":
     resp = input("¿Desea continuar jugando? [S/?]: ").upper()
     print(color.WHITE)
 
+utl.statistics(stat)
 print("")
 print("=" * 20)
 print("| Juego finalizado |")

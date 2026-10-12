@@ -1,9 +1,8 @@
 import random
 import utils.colors as color
-import utils.validations as valid
+import utils.util as utl
 
 symbol = []
-move_counter = 0
 
 def printIntro(introFile = "") -> None:
     '''
@@ -34,18 +33,20 @@ def printIntro(introFile = "") -> None:
     try:
         file = open(introFile, "r", encoding="utf-8")
         content = file.read()
+        file.close()
         print(color.YELLOW)
-        print("\n", "=" * 50, "\n", "=" * 50, "\n")
+        print("=" * 50)
+        print("=" * 50)
         print(color.GREEN)
         print(content)
-        print(color.YELLOW)
-        print("\n", "=" * 50, "\n", "=" * 50, "\n", color.WHITE)
-        # print()
-        file.close()
-        valid.message_system("Desarrollado por: Mayker Escudero - Jaime Montoya")
+        print(color.YELLOW, end="")
+        print("=" * 50)
+        print("=" * 50)
+        print(color.WHITE)
+        utl.system_message("Desarrollado por: Mayker Escudero - Jaime Montoya")
     except FileNotFoundError as e:
         print("Error al abrir el archivo:", e)
-
+    
 
 def drawBoard(board):
     # Esta función imprime el tablero en la consola
@@ -78,9 +79,9 @@ def inputPlayerLetter() -> list:
     while char != "X" and char != "O":
         print(color.GREEN + "-" * 20 + "\n" + "Seleccionar símbolo" + 
               "\n" + "-" * 20 + color.WHITE)
-        char = input("Símbolo a usar [X/O]: ").upper()
+        char = input("Símbolo a usar [X | O]: ").upper()
         if char != "X" and char != "O":
-            valid.message_system("Debe usar uno de los símbolos 'X' u 'O' para jugar. " \
+            utl.system_message("Debe usar uno de los símbolos 'X' u 'O' para jugar. " \
                 "Intente de nuevo ", "error")
         else:
             if char == "X":
@@ -105,7 +106,7 @@ def whoGoesFirst() -> str:
     return "Usuario" if rand == 1 else "Computadora"
 
 
-def makeMove(board, letter, move):
+def makeMove(board, letter, move) -> None:
     # Esta función actualiza el estado del tablero.
 
     # Argumentos:
@@ -114,10 +115,8 @@ def makeMove(board, letter, move):
     # move: Es el número de la casilla donde se desea poner la marca.
 
     # Desarrolle el cuerpo de la función aquí...
-    global move_counter
     board[move] = f' {letter} '
-    move_counter += 1
-
+    
 
 def isWinner(board, letter):
     # Esta función debe verificar si hay una jugada ganadora en el tablero.
@@ -158,16 +157,12 @@ def getPlayerMove(board) -> int:
 
     # Desarrolle el cuerpo de la función aquí...
     move = 0
-    if move_counter < 9:
-        while move < 1 or move > 9 or not isSpaceFree(board, move - 1): 
-            move = int(input("Casilla (celda 1-9): "))
-            if move < 1 or move > 9 or not isSpaceFree(board, move - 1):
-                valid.message_system("Casilla no válida, Intente de nuevo", "error")
-    else:
-        valid.message_system("Tablero lleno", "error")
+    while move < 1 or move > 9 or not isSpaceFree(board, move - 1): 
+        move = int(input("Casilla (celda 1-9): "))
+        if move < 1 or move > 9 or not isSpaceFree(board, move - 1):
+            utl.system_message("Casilla no válida, Intente de nuevo", "error")
     return move
    
-
     
 def chooseRandomMoveFromList(board, movesList):
     # Esta función escoge de forma aleatoria una casilla vacía del tablero.
@@ -183,7 +178,7 @@ def chooseRandomMoveFromList(board, movesList):
     # Desarrolle el cuerpo de la función aquí...
     pass
 
-def getComputerMove(board, computerLetter):
+def getComputerMove(board, computerLetter) -> int:
     # Esta función implementa la estrategia de juego de la computadora.
 
     # Argumentos:
@@ -191,7 +186,11 @@ def getComputerMove(board, computerLetter):
     # computerLetter: La marca que está usando la computadora.
 
     # Desarrolle el cuerpo de la función aquí...
-
+    move = 0
+    while not isSpaceFree(board, move) and move < 9:
+        move += 1
+        
+    return move
     # 1. Verificar si la computadora puede ganar...
 
     # 2. Si no, verificar si el usuario puede ganar en la siguiente jugada, si si, bloquear esta jugada...
@@ -201,10 +200,9 @@ def getComputerMove(board, computerLetter):
     # 4. Si no, tratar de marcar la casilla del centro, si esta está vacía...
 
     # 5. Si no, tratar de poner una marca en alguna de las casillas de los lados...
+    
 
-    pass
-
-def isBoardFull(board):
+def isBoardFull(board) -> bool:
     # Esta función verifica si el tablero está lleno.
 
     # Argumentos:
@@ -214,4 +212,4 @@ def isBoardFull(board):
     # En caso contrario debe retornar el valor lógico False.
 
     # Desarrolle el cuerpo de la función aquí...
-    pass
+    return True if board.count(' X ') + board.count(' O ') == 9 else False
