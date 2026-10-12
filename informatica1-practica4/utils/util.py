@@ -1,7 +1,7 @@
 from datetime import date, datetime
 import utils.colors as color
 
-def system_message(message = "", type = "information") -> None:
+def systemMessage(message = "", type = "information") -> None:
     match type:
         case "information":
             col = color.BLUE
@@ -28,21 +28,35 @@ def system_message(message = "", type = "information") -> None:
 
 
 def statistics(stat) -> None:
-    text_est = ""
-    text_est += "-" * 20 + "Triqui" + "-" * 20 + "\n"
+    textEstat = ""
+    textEstat += "-" * 20 + "Triqui" + "-" * 20 + "\n"
 
     now = datetime.now()
-    text_est += now.strftime("%A, %B %d, %Y - %H:%M:%S")
+    textEstat += now.strftime("%A, %B %d, %Y - %H:%M:%S")
     
-    text_est += "\n\nNombre del jugador: " + stat[0] 
+    textEstat += "\n\nNombre del jugador: " + stat[0] 
 
-    text_est += "\n\nJuegos ganados por el usuario: " + str(stat[1])
-    text_est += "\nJuegos ganados por el computador: " + str(stat[2]) 
-    text_est += "\nJuegos empatados: " + str(stat[3]) 
-    text_est += "\n" 
-    text_est += "-" * 46
-    text_est += "\n\n" 
+    textEstat += "\n\nJuegos ganados por el usuario: " + str(stat[1])
+    textEstat += "\nJuegos ganados por el computador: " + str(stat[2]) 
+    textEstat += "\nJuegos empatados: " + str(stat[3]) 
+    textEstat += "\n" 
+    textEstat += "-" * 46
+    textEstat += "\n\n" 
 
     file = open("assets/files/statistics.log", "a", encoding="utf-8")
-    file.write(text_est)
+    file.write(textEstat)
     file.close()
+
+
+def validateInput(value) -> bool:
+    if len(value) == 1:
+        i = 0
+        sw = True
+        while sw and i < len(value):
+            if value[i] not in "123456789":
+                sw = False
+            else:
+                i += 1
+    else:
+        sw = False
+    return sw

@@ -43,12 +43,12 @@ def printIntro(introFile = "") -> None:
         print("=" * 50)
         print("=" * 50)
         print(color.WHITE)
-        utl.system_message("Desarrollado por: Mayker Escudero - Jaime Montoya")
+        utl.systemMessage("Desarrollado por: Mayker Escudero - Jaime Montoya")
     except FileNotFoundError as e:
         print("Error al abrir el archivo:", e)
     
 
-def drawBoard(board):
+def drawBoard(board) -> None:
     # Esta función imprime el tablero en la consola
     # Argumentos:
     # Board: Lista de strings que representa el estado del tablero
@@ -63,6 +63,7 @@ def drawBoard(board):
     print(board[3] + "|" + board[4] + "|" + board[5])
     print("-+-+--+-+-")
     print(board[0] + "|" + board[1] + "|" + board[2])
+
     print("-" * 20)
 
 
@@ -74,14 +75,13 @@ def inputPlayerLetter() -> list:
     # ocupa la segunda posición.
 
     # Desarrolle el cuerpo de la función aquí...
-    
     char = ""
     while char != "X" and char != "O":
         print(color.GREEN + "-" * 20 + "\n" + "Seleccionar símbolo" + 
               "\n" + "-" * 20 + color.WHITE)
         char = input("Símbolo a usar [X | O]: ").upper()
         if char != "X" and char != "O":
-            utl.system_message("Debe usar uno de los símbolos 'X' u 'O' para jugar. " \
+            utl.systemMessage("Debe usar uno de los símbolos 'X' u 'O' para jugar. " \
                 "Intente de nuevo ", "error")
         else:
             if char == "X":
@@ -91,7 +91,6 @@ def inputPlayerLetter() -> list:
                 symbol.append("O")
                 symbol.append("X")
     return symbol
-
     
 
 def whoGoesFirst() -> str:
@@ -118,7 +117,7 @@ def makeMove(board, letter, move) -> None:
     board[move] = f' {letter} '
     
 
-def isWinner(board, letter):
+def isWinner(board, letter) -> bool:
     # Esta función debe verificar si hay una jugada ganadora en el tablero.
 
     # Argumentos:
@@ -129,7 +128,30 @@ def isWinner(board, letter):
     # debe retornar el valor lógico False, si no hay una jugada ganadora.
 
     # Desarrolle el cuerpo de la función aquí...
-    pass
+    # Verificar filas
+    if f" {letter} " == board[0] == board[1] == board[2]:
+        return True
+    elif f" {letter} " == board[3] == board[4] == board[5]:
+        return True
+    elif f" {letter} " == board[6] == board[7] == board[8]:
+        return True
+    
+    # Verificar columnas
+    elif f" {letter} " == board[0] == board[3] == board[6]:
+        return True
+    elif f" {letter} " == board[1] == board[4] == board[7]:
+        return True
+    elif f" {letter} " == board[2] == board[5] == board[8]:
+        return True
+    
+    # Verificar diagonales
+    elif f" {letter} " == board[2] == board[4] == board[6]:
+        return True
+    elif f" {letter} " == board[0] == board[4] == board[8]:
+        return True
+    
+    else:
+        return False
 
 
 def isSpaceFree(board, move) -> bool:
@@ -157,10 +179,17 @@ def getPlayerMove(board) -> int:
 
     # Desarrolle el cuerpo de la función aquí...
     move = 0
-    while move < 1 or move > 9 or not isSpaceFree(board, move - 1): 
-        move = int(input("Casilla (celda 1-9): "))
-        if move < 1 or move > 9 or not isSpaceFree(board, move - 1):
-            utl.system_message("Casilla no válida, Intente de nuevo", "error")
+    while move < 1 or not isSpaceFree(board, move - 1):
+        flag = False
+        while not flag:
+            value = input("Casilla (celda 1-9): ").strip()
+            flag = utl.validateInput(value)
+            if not flag:
+                utl.systemMessage("Casilla no válida, Intente de nuevo", "error")
+            
+        move = int(value)
+        if not isSpaceFree(board, move - 1):
+            utl.systemMessage("Casilla no válida, Intente de nuevo", "error")
     return move
    
     
@@ -177,6 +206,7 @@ def chooseRandomMoveFromList(board, movesList):
 
     # Desarrolle el cuerpo de la función aquí...
     pass
+
 
 def getComputerMove(board, computerLetter) -> int:
     # Esta función implementa la estrategia de juego de la computadora.
