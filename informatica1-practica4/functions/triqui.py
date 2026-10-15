@@ -193,7 +193,7 @@ def getPlayerMove(board) -> int:
     return move
    
     
-def chooseRandomMoveFromList(board, movesList):
+def chooseRandomMoveFromList(board, movesList) -> int:
     # Esta función escoge de forma aleatoria una casilla vacía del tablero.
 
     # Argumentos:
@@ -205,7 +205,19 @@ def chooseRandomMoveFromList(board, movesList):
     # esta función debe retornar el valor None.
 
     # Desarrolle el cuerpo de la función aquí...
-    pass
+    i = 0
+    cellRand = -1
+    while i < len(board):
+        j = 0
+        while j < len(movesList):
+            if not isSpaceFree(board, movesList[j]):
+                movesList.pop(j)
+            else:
+                j += 1
+        i += 1
+    if len(movesList) > 0:
+        cellRand = random.choice(movesList)
+    return cellRand
 
 
 def getComputerMove(board, computerLetter) -> int:
@@ -216,20 +228,22 @@ def getComputerMove(board, computerLetter) -> int:
     # computerLetter: La marca que está usando la computadora.
 
     # Desarrolle el cuerpo de la función aquí...
-    move = 0
-    while not isSpaceFree(board, move) and move < 9:
-        move += 1
-        
-    return move
+
     # 1. Verificar si la computadora puede ganar...
 
     # 2. Si no, verificar si el usuario puede ganar en la siguiente jugada, si si, bloquear esta jugada...
 
+
     # 3. Si no, tratar de poner una marca en alguna de las esquinas, si alguna está vacía...
-
     # 4. Si no, tratar de marcar la casilla del centro, si esta está vacía...
-
     # 5. Si no, tratar de poner una marca en alguna de las casillas de los lados...
+    cell = chooseRandomMoveFromList(board, [0, 2, 6, 8])
+    if cell == -1:
+        # cell = chooseRandomMoveFromList(board, [4])
+        cell = 4
+        if not isSpaceFree(board, cell):
+            cell = chooseRandomMoveFromList(board, [1, 3, 5, 7])            
+    return cell
     
 
 def isBoardFull(board) -> bool:
