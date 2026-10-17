@@ -66,7 +66,7 @@ while resp == "S":
         else: # 6. Turno de la computadora.
 
             # a. Computadora hace jugada.
-            move = tr.getComputerMove(board, symbol[1])
+            move = tr.getComputerMove(board, f" {symbol[1]} ")
 
             # b. Actualizar el tablero.
             tr.makeMove(board, symbol[1], move)

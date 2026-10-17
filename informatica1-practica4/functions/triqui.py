@@ -230,19 +230,102 @@ def getComputerMove(board, computerLetter) -> int:
     # Desarrolle el cuerpo de la función aquí...
 
     # 1. Verificar si la computadora puede ganar...
+    # Filas
+    # Primera fila
+    if (computerLetter == board[0] == board[1]) and isSpaceFree(board, 2):
+        cell = 2
+    elif (computerLetter == board[0] == board[2]) and isSpaceFree(board, 1):
+        cell = 1
+    elif (computerLetter == board[1] == board[2]) and isSpaceFree(board, 0):
+        cell = 0
+    # Segunda fila
+    elif (computerLetter == board[3] == board[4]) and isSpaceFree(board, 5):
+        cell = 5
+    elif (computerLetter == board[3] == board[5]) and isSpaceFree(board, 4):
+        cell = 4
+    elif (computerLetter == board[4] == board[5]) and isSpaceFree(board, 3):
+        cell = 3
+    # Tercera fila
+    elif (computerLetter == board[6] == board[7]) and isSpaceFree(board, 8):
+        cell = 8
+    elif (computerLetter == board[6] == board[8]) and isSpaceFree(board, 7):
+        cell = 7
+    elif (computerLetter == board[7] == board[8]) and isSpaceFree(board, 6):
+        cell = 6
+
+    # Columnas
+    # Primera columna
+    elif (computerLetter == board[0] == board[3]) and isSpaceFree(board, 6):
+        cell = 6
+    elif (computerLetter == board[0] == board[6]) and isSpaceFree(board, 3):
+        cell = 3
+    elif (computerLetter == board[3] == board[6]) and isSpaceFree(board, 0):
+        cell = 0
+    # Segunda columna
+    elif (computerLetter == board[1] == board[4]) and isSpaceFree(board, 7):
+        cell = 7
+    elif (computerLetter == board[1] == board[7]) and isSpaceFree(board, 4):
+        cell = 4
+    elif (computerLetter == board[4] == board[7]) and isSpaceFree(board, 1):
+        cell = 1
+    # Tercera columna
+    elif (computerLetter == board[2] == board[5]) and isSpaceFree(board, 8):
+        cell = 8
+    elif (computerLetter == board[2] == board[8]) and isSpaceFree(board, 5):
+        cell = 5
+    elif (computerLetter == board[5] == board[8]) and isSpaceFree(board, 2):
+        cell = 2
+        
+    # Diagonales
+    # Diagonal principal
+    elif (computerLetter == board[2] == board[4]) and isSpaceFree(board, 6):
+        cell = 6
+    elif (computerLetter == board[2] == board[6]) and isSpaceFree(board, 4):
+        cell = 4
+    elif (computerLetter == board[4] == board[6]) and isSpaceFree(board, 2):
+        cell = 2
+    # Diagonal secundaria
+    elif (computerLetter == board[0] == board[4]) and isSpaceFree(board, 8):
+        cell = 8
+    elif (computerLetter == board[0] == board[8]) and isSpaceFree(board, 4):
+        cell = 4
+    elif (computerLetter == board[4] == board[8]) and isSpaceFree(board, 0):
+        cell = 0
+    
 
     # 2. Si no, verificar si el usuario puede ganar en la siguiente jugada, si si, bloquear esta jugada...
-
+    # Filas
+    # Primera fila
+    # elif (computerLetter == board[0] == board[1]) and isSpaceFree(board, 2):
+    #     cell = 2
+    # elif (computerLetter == board[0] == board[2]) and isSpaceFree(board, 1):
+    #     cell = 1
+    # elif (computerLetter == board[1] == board[2]) and isSpaceFree(board, 0):
+    #     cell = 0
+    # # Segunda fila
+    # elif (computerLetter == board[3] == board[4]) and isSpaceFree(board, 5):
+    #     cell = 5
+    # elif (computerLetter == board[3] == board[5]) and isSpaceFree(board, 4):
+    #     cell = 4
+    # elif (computerLetter == board[4] == board[5]) and isSpaceFree(board, 3):
+    #     cell = 3
+    # # Tercera fila
+    # elif (computerLetter == board[6] == board[7]) and isSpaceFree(board, 8):
+    #     cell = 8
+    # elif (computerLetter == board[6] == board[8]) and isSpaceFree(board, 7):
+    #     cell = 7
+    # elif (computerLetter == board[7] == board[8]) and isSpaceFree(board, 6):
+    #     cell = 6
 
     # 3. Si no, tratar de poner una marca en alguna de las esquinas, si alguna está vacía...
     # 4. Si no, tratar de marcar la casilla del centro, si esta está vacía...
     # 5. Si no, tratar de poner una marca en alguna de las casillas de los lados...
-    cell = chooseRandomMoveFromList(board, [0, 2, 6, 8])
-    if cell == -1:
-        # cell = chooseRandomMoveFromList(board, [4])
-        cell = 4
-        if not isSpaceFree(board, cell):
-            cell = chooseRandomMoveFromList(board, [1, 3, 5, 7])            
+    else:
+        cell = chooseRandomMoveFromList(board, [0, 2, 6, 8])
+        if cell == -1:
+            cell = 4
+            if not isSpaceFree(board, cell):
+                cell = chooseRandomMoveFromList(board, [1, 3, 5, 7])            
     return cell
     
 
