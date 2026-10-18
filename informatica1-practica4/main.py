@@ -1,6 +1,6 @@
-import functions.triqui as tr
-import utils.colors as color
-import utils.util as utl
+import src.triqui as tr
+import src.utils.colors_symbols as col_sym
+import src.utils.util as utl
 
 boarOrigin = ['   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ', '   ']
 boarHelp = [' 1 ', ' 2 ', ' 3 ', ' 4 ', ' 5 ', ' 6 ', ' 7 ', ' 8 ', ' 9 ']
@@ -99,9 +99,9 @@ while resp == "S":
 
     # 7. Preguntar si el usuario quiere jugar una vez mas
     #    Si no, finalizar el programa.
-    print(color.YELLOW)
+    print(col_sym.YELLOW)
     resp = input("¿Desea continuar jugando? [S/?]: ").upper()
-    print(color.WHITE)
+    print(col_sym.WHITE)
 
 utl.statistics(stat)
 print("")

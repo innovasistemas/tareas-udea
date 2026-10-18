@@ -1,29 +1,29 @@
 from datetime import date, datetime
-import utils.colors as color
+import src.utils.colors_symbols as col_sym
 
 def systemMessage(message = "", type = "information") -> None:
     match type:
         case "information":
-            col = color.BLUE
-            title = "\u2139 Información del Sistema"
+            col = col_sym.BLUE
+            title = f"{col_sym.SYMBOL_INFORMATION} Información del Sistema"
         case "success":
-            col = color.GREEN
-            title = "\u2714 Felicitaciones"
+            col = col_sym.GREEN
+            title = f"{col_sym.SYMBOL_SUCCESS} Felicitaciones"
         case "error":
-            title = "\u2716 ¡Error!"
-            col = color.RED
+            title = f"{col_sym.SYMBOL_ERROR} ¡Error!"
+            col = col_sym.RED
         case "warning":
-            title = "\u26A0 Advertencia"
-            col = color.YELLOW
+            title = f"{col_sym.SYMBOL_WARNING} Advertencia"
+            col = col_sym.YELLOW
         case _:
-            col = color.BLUE
-            title = "\u2139 Información del Sistema"
+            col = col_sym.BLUE
+            title = f"{col_sym.SYMBOL_INFORMATION} Información del Sistema"
     print(col)
     print("#" * len(message))
     print(f"{title} \n{message}")
     print("#" * len(message))
-    print(color.WHITE, end="")
-    input("Presione Enter \u23CE para continuar...")
+    print(col_sym.WHITE, end="")
+    input(f"Presione Enter {col_sym.ENTER} para continuar...")
     print("")
 
 

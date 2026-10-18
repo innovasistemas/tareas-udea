@@ -1,6 +1,6 @@
 import random
-import utils.colors as color
-import utils.util as utl
+import src.utils.colors_symbols as col_sym
+import src.utils.util as utl
 
 symbol = []
 
@@ -34,15 +34,15 @@ def printIntro(introFile = "") -> None:
         file = open(introFile, "r", encoding="utf-8")
         content = file.read()
         file.close()
-        print(color.YELLOW)
+        print(col_sym.YELLOW)
         print("=" * 50)
         print("=" * 50)
-        print(color.GREEN)
+        print(col_sym.GREEN)
         print(content)
-        print(color.YELLOW, end="")
+        print(col_sym.YELLOW, end="")
         print("=" * 50)
         print("=" * 50)
-        print(color.WHITE)
+        print(col_sym.WHITE)
         utl.systemMessage("Desarrollado por: Mayker Escudero - Jaime Montoya")
     except FileNotFoundError as e:
         print("Error al abrir el archivo:", e)
@@ -77,8 +77,8 @@ def inputPlayerLetter() -> list:
     # Desarrolle el cuerpo de la función aquí...
     char = ""
     while char != "X" and char != "O":
-        print(color.GREEN + "-" * 20 + "\n" + "Seleccionar símbolo" + 
-              "\n" + "-" * 20 + color.WHITE)
+        print(col_sym.GREEN + "-" * 20 + "\n" + "Seleccionar símbolo" + 
+              "\n" + "-" * 20 + col_sym.WHITE)
         char = input("Símbolo a usar [X | O]: ").upper()
         if char != "X" and char != "O":
             utl.systemMessage("Debe usar uno de los símbolos 'X' u 'O' para jugar. " \
@@ -165,7 +165,15 @@ def isSpaceFree(board, move) -> bool:
     # en caso contrario, debe retornar el valor lógico False.
 
     # Desarrolle el cuerpo de la función aquí...
-    return True if board[move] == '   ' else False
+    
+    # Validaciones para pruebas de caja negra
+    if not isinstance(move, int):
+        raise TypeError("El movimiento debe ser un número entero")
+    
+    if move < 0 or move > 8:
+        raise ValueError("El movimiento debe estar entre 1 y 9")
+    
+    return board[move] == '   '
         
 
 def getPlayerMove(board) -> int:
@@ -339,4 +347,11 @@ def isBoardFull(board) -> bool:
     # En caso contrario debe retornar el valor lógico False.
 
     # Desarrolle el cuerpo de la función aquí...
-    return True if board.count(' X ') + board.count(' O ') == 9 else False
+    # Filtro de robustez (caja negra)
+    # raise TypeError(f"{type(board)}={board}")
+
+    if not isinstance(board, list):
+        raise TypeError("El tablero debe ser una lista")
+        
+    return board.count(' X ') + board.count(' O ') == 9
+    
