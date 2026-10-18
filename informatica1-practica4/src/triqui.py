@@ -239,7 +239,7 @@ def getComputerMove(board, computerLetter) -> int:
 
     # 1. Verificar si la computadora puede ganar...
     # Filas
-    # Primera fila
+    # Tercera fila
     if (computerLetter == board[0] == board[1]) and isSpaceFree(board, 2):
         cell = 2
     elif (computerLetter == board[0] == board[2]) and isSpaceFree(board, 1):
@@ -253,7 +253,7 @@ def getComputerMove(board, computerLetter) -> int:
         cell = 4
     elif (computerLetter == board[4] == board[5]) and isSpaceFree(board, 3):
         cell = 3
-    # Tercera fila
+    # Primera fila
     elif (computerLetter == board[6] == board[7]) and isSpaceFree(board, 8):
         cell = 8
     elif (computerLetter == board[6] == board[8]) and isSpaceFree(board, 7):
