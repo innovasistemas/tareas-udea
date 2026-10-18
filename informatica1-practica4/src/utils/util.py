@@ -43,7 +43,7 @@ def statistics(stat) -> None:
     textEstat += "-" * 46
     textEstat += "\n\n" 
 
-    file = open("assets/files/statistics.log", "a", encoding="utf-8")
+    file = open("logs/statistics.log", "a", encoding="utf-8")
     file.write(textEstat)
     file.close()
 
