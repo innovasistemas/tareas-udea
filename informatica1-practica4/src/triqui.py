@@ -299,31 +299,77 @@ def getComputerMove(board, computerLetter) -> int:
         cell = 4
     elif (computerLetter == board[4] == board[8]) and isSpaceFree(board, 0):
         cell = 0
-    
+
 
     # 2. Si no, verificar si el usuario puede ganar en la siguiente jugada, si si, bloquear esta jugada...
+
+    # Validación inicial para evitar el encierro desde el inicio
+    elif board.count(f" {symbol[0]} ") == 1 and board.count(computerLetter) == 0 \
+          and  f" {symbol[0]} " in [board[0], board[2], board[6], board[8]]:
+        cell = 4
+
     # Filas
     # Primera fila
-    # elif (computerLetter == board[0] == board[1]) and isSpaceFree(board, 2):
-    #     cell = 2
-    # elif (computerLetter == board[0] == board[2]) and isSpaceFree(board, 1):
-    #     cell = 1
-    # elif (computerLetter == board[1] == board[2]) and isSpaceFree(board, 0):
-    #     cell = 0
-    # # Segunda fila
-    # elif (computerLetter == board[3] == board[4]) and isSpaceFree(board, 5):
-    #     cell = 5
-    # elif (computerLetter == board[3] == board[5]) and isSpaceFree(board, 4):
-    #     cell = 4
-    # elif (computerLetter == board[4] == board[5]) and isSpaceFree(board, 3):
-    #     cell = 3
-    # # Tercera fila
-    # elif (computerLetter == board[6] == board[7]) and isSpaceFree(board, 8):
-    #     cell = 8
-    # elif (computerLetter == board[6] == board[8]) and isSpaceFree(board, 7):
-    #     cell = 7
-    # elif (computerLetter == board[7] == board[8]) and isSpaceFree(board, 6):
-    #     cell = 6
+    elif (f" {symbol[0]} " == board[0] == board[1]) and isSpaceFree(board, 2):
+        cell = 2
+    elif (f" {symbol[0]} " == board[0] == board[2]) and isSpaceFree(board, 1):
+        cell = 1
+    elif (f" {symbol[0]} " == board[1] == board[2]) and isSpaceFree(board, 0):
+        cell = 0
+    # Segunda fila
+    elif (f" {symbol[0]} " == board[3] == board[4]) and isSpaceFree(board, 5):
+        cell = 5
+    elif (f" {symbol[0]} " == board[3] == board[5]) and isSpaceFree(board, 4):
+        cell = 4
+    elif (f" {symbol[0]} " == board[4] == board[5]) and isSpaceFree(board, 3):
+        cell = 3
+    # Tercera fila
+    elif (f" {symbol[0]} " == board[6] == board[7]) and isSpaceFree(board, 8):
+        cell = 8
+    elif (f" {symbol[0]} " == board[6] == board[8]) and isSpaceFree(board, 7):
+        cell = 7
+    elif (f" {symbol[0]} " == board[7] == board[8]) and isSpaceFree(board, 6):
+        cell = 6
+
+    # Columnas
+    # Primera columna
+    elif (f" {symbol[0]} " == board[0] == board[3]) and isSpaceFree(board, 6):
+        cell = 6
+    elif (f" {symbol[0]} " == board[0] == board[6]) and isSpaceFree(board, 3):
+        cell = 3
+    elif (f" {symbol[0]} " == board[3] == board[6]) and isSpaceFree(board, 0):
+        cell = 0
+    # Segunda columna
+    elif (f" {symbol[0]} " == board[1] == board[4]) and isSpaceFree(board, 7):
+        cell = 7
+    elif (f" {symbol[0]} " == board[1] == board[7]) and isSpaceFree(board, 4):
+        cell = 4
+    elif (f" {symbol[0]} " == board[4] == board[7]) and isSpaceFree(board, 1):
+        cell = 1
+    # Tercera columna
+    elif (f" {symbol[0]} " == board[2] == board[5]) and isSpaceFree(board, 8):
+        cell = 8
+    elif (f" {symbol[0]} " == board[2] == board[8]) and isSpaceFree(board, 5):
+        cell = 5
+    elif (f" {symbol[0]} " == board[5] == board[8]) and isSpaceFree(board, 2):
+        cell = 2
+        
+    # Diagonales
+    # Diagonal principal
+    elif (f" {symbol[0]} " == board[2] == board[4]) and isSpaceFree(board, 6):
+        cell = 6
+    elif (f" {symbol[0]} " == board[2] == board[6]) and isSpaceFree(board, 4):
+        cell = 4
+    elif (f" {symbol[0]} " == board[4] == board[6]) and isSpaceFree(board, 2):
+        cell = 2
+    # Diagonal secundaria
+    elif (f" {symbol[0]} " == board[0] == board[4]) and isSpaceFree(board, 8):
+        cell = 8
+    elif (f" {symbol[0]} " == board[0] == board[8]) and isSpaceFree(board, 4):
+        cell = 4
+    elif (f" {symbol[0]} " == board[4] == board[8]) and isSpaceFree(board, 0):
+        cell = 0
+
 
     # 3. Si no, tratar de poner una marca en alguna de las esquinas, si alguna está vacía...
     # 4. Si no, tratar de marcar la casilla del centro, si esta está vacía...
@@ -347,9 +393,8 @@ def isBoardFull(board) -> bool:
     # En caso contrario debe retornar el valor lógico False.
 
     # Desarrolle el cuerpo de la función aquí...
+    
     # Filtro de robustez (caja negra)
-    # raise TypeError(f"{type(board)}={board}")
-
     if not isinstance(board, list):
         raise TypeError("El tablero debe ser una lista")
         
