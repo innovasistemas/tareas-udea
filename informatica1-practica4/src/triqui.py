@@ -237,6 +237,8 @@ def getComputerMove(board, computerLetter) -> int:
 
     # Desarrolle el cuerpo de la función aquí...
 
+    freeSide = []
+
     # 1. Verificar si la computadora puede ganar...
     # Filas
     # Tercera fila
@@ -307,6 +309,22 @@ def getComputerMove(board, computerLetter) -> int:
     elif board.count(f" {symbol[0]} ") == 1 and board.count(computerLetter) == 0 \
           and  f" {symbol[0]} " in [board[0], board[2], board[6], board[8]]:
         cell = 4
+
+    elif (f" {symbol[0]} " == board[0] == board[8] or \
+          f" {symbol[0]} " == board[2] == board[6]) and \
+            board[4] == computerLetter and \
+            board.count(f" {symbol[0]} ") == 2 and \
+            board.count(computerLetter) == 1:
+        if isSpaceFree(board, 1):
+            freeSide.append(1)
+        if isSpaceFree(board, 3):
+            freeSide.append(3)
+        if isSpaceFree(board, 5):
+            freeSide.append(5)
+        if isSpaceFree(board, 7):
+            freeSide.append(7)
+        cell = random.choice(freeSide)
+    
 
     # Filas
     # Primera fila
