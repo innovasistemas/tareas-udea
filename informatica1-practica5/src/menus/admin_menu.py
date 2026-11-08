@@ -2,6 +2,7 @@ import src.utils.util as utl
 import src.utils.colors_symbols as col_sym
 import src.menus.station_menu as st_mnu
 import src.menus.user_menu as usr_mnu
+import src.users.authentication as auth
 
 def admin_menu() -> None:
     '''
@@ -10,6 +11,7 @@ def admin_menu() -> None:
 
     opt = ""
     while opt != "0":
+        auth.connected_user()
         print(col_sym.GREEN + "-" * 31)
         print("|      Menú Administrador     |")
         print("-" * 31 + col_sym.WHITE)
@@ -20,6 +22,7 @@ def admin_menu() -> None:
         print(f"|  {col_sym.RED}3.{col_sym.WHITE} Depurar registros       |")
         print("-" * 31)
         opt = input(f"{col_sym.YELLOW}Ingresar opción:{col_sym.WHITE} ")
+        print()
 
         match opt:
             case "0":

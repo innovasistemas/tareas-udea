@@ -1,6 +1,6 @@
 import src.utils.util as utl
 import src.utils.colors_symbols as col_sym
-
+import src.users.authentication as auth
 
 def guest_menu() -> None:
     '''
@@ -9,6 +9,7 @@ def guest_menu() -> None:
 
     opt = ""
     while opt != "0":
+        auth.connected_user()
         print(col_sym.GREEN + "-" * 26)
         print("|     Menú Visitante     |")
         print("-" * 26 + col_sym.WHITE)
@@ -17,6 +18,7 @@ def guest_menu() -> None:
         print(f"|  {col_sym.RED}1.{col_sym.WHITE} Ver Estadísticas   |")
         print("-" * 26)
         opt = input(f"{col_sym.YELLOW}Ingresar opción:{col_sym.WHITE} ")
+        print()
 
         match opt:
             case "0":

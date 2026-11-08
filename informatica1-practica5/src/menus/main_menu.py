@@ -27,16 +27,17 @@ def main_menu() -> None:
             case "0":
                 utl.systemMessage("Programa finalizado")
             case "1":
-                profile = auth.data_authentication()
-                if profile.lower() == "administrador\n":
+                auth.authentication()
+                if 'rol' in auth.user_auth and auth.user_auth['rol'].lower() == "administrador":
                     utl.systemMessage("Ingreso concedido para Administrador", "success")
                     adm_mnu.admin_menu()
-                elif profile.lower() == "operador\n":
+                elif 'rol' in auth.user_auth and auth.user_auth['rol'].lower() == "operador":
                     utl.systemMessage("Ingreso concedido para Operador", "success")
                     oper_mnu.operator_menu()
                 else:
-                    utl.systemMessage(profile, "error")
+                    utl.systemMessage(auth.user_auth['message']['error'], "error")
             case "2":
+                auth.validate_credentials()
                 gue_mnu.guest_menu()
             case _:
                 utl.systemMessage("Opción no válida", "error")

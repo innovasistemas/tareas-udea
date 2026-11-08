@@ -1,5 +1,6 @@
 import src.utils.util as utl
 import src.utils.colors_symbols as col_sym
+import src.users.authentication as auth
 
 def station_menu() -> None:
     '''
@@ -8,6 +9,7 @@ def station_menu() -> None:
 
     opt = ""
     while opt != "0":
+        auth.connected_user()
         print(col_sym.GREEN + "-" * 22)
         print("|   Menú Estaciones  |")
         print("-" * 22 + col_sym.WHITE)
@@ -19,6 +21,7 @@ def station_menu() -> None:
         print(f"|  {col_sym.RED}4.{col_sym.WHITE} Eliminar       |")
         print("-" * 22)
         opt = input(f"{col_sym.YELLOW}Ingresar opción:{col_sym.WHITE} ")
+        print()
 
         match opt:
             case "0":

@@ -1,6 +1,6 @@
 import src.utils.util as utl
 import src.utils.colors_symbols as col_sym
-
+import src.users.authentication as auth
 
 def operator_menu() -> None:
     '''
@@ -9,6 +9,7 @@ def operator_menu() -> None:
 
     opt = ""
     while opt != "0":
+        auth.connected_user()
         print(col_sym.GREEN + "-" * 26)
         print("|      Menú Operador     |")
         print("-" * 26 + col_sym.WHITE)
@@ -18,6 +19,7 @@ def operator_menu() -> None:
         print(f"|  {col_sym.RED}2.{col_sym.WHITE} Mostrar Medidas    |")
         print("-" * 26)
         opt = input(f"{col_sym.YELLOW}Ingresar opción:{col_sym.WHITE} ")
+        print()
 
         match opt:
             case "0":
