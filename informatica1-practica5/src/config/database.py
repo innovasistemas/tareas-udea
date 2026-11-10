@@ -24,11 +24,13 @@ def load_data_csv():
         l += 1
     file.close()
 
-    file = open("assets/data_base/estaciones.csv", "r")
+    file = open("assets/data_base/estaciones.csv", "r", encoding="utf-8")
     l = 0
     for line in file:
         if l != 0:
             aux_data = line.split(",")
+            # Quitar el \n del final de la línea en el archivo csv
+            aux_data[1] = aux_data[1][:len(aux_data[1]) - 1]
             stations_data.update({
                 aux_data[0]: 
                     {"nombre": aux_data[1]}

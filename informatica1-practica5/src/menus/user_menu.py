@@ -29,14 +29,15 @@ def user_menu() -> None:
             case "0":
                 pass
             case "1":
-                pass
+                user.create()
             case "2":
                 pass
             case "3":
                 pass
             case "4":
-                pass
+                id = input("Buscar por usuario por identificación: ")
+                user.read(id)
             case "5":
-                user.list()
+                user.read()
             case _:
                 utl.systemMessage("Opción no válida", "error")
