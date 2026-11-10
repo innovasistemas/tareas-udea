@@ -29,7 +29,7 @@ def validate_credentials(user = "", password = "") -> None:
     global user_auth
 
     if user in db.users_data and password == db.users_data[user]["clave"]:
-        user_auth = db.users_data[user]
+        user_auth = {"id": user} | db.users_data[user]
     else:
         user_auth = {"message": 
                         {"error": "Usuario/contraseña no válidos", 

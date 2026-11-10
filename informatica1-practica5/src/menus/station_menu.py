@@ -33,9 +33,9 @@ def station_menu() -> None:
             case "2":
                 pass
             case "3":
-                pass
+                station.delete()
             case "4":
-                id = input("Buscar por estación por código: ")
+                id = input("Buscar estación por código: ")
                 station.read(id)
             case "5":
                 station.read()

@@ -33,9 +33,9 @@ def user_menu() -> None:
             case "2":
                 pass
             case "3":
-                pass
+                user.delete()
             case "4":
-                id = input("Buscar por usuario por identificación: ")
+                id = input("Buscar usuario por identificación: ")
                 user.read(id)
             case "5":
                 user.read()

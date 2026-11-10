@@ -3,6 +3,7 @@ import src.config.database as db
 import src.utils.colors_symbols as col_sym
 import src.utils.validations as valid
 import src.utils.util as utl 
+import src.users.authentication as auth
 
 user_id = ""
 name = ""
@@ -11,9 +12,13 @@ password = ""
 confirm_password = ""
 
 def read(id = "") -> None:
+    '''
+    Función para mostrar uno o todos los registros
+    '''
+
     print(col_sym.BLUE)
     print("-" * 70)
-    print(f"| {'Identificación':^15} | {'Nombre':^31} | {'Rol':^14} |")
+    print(f"| {'Documento':^15} | {'Nombre':^31} | {'Rol':^14} |")
     print("-" * 70)
     print(col_sym.WHITE)
     if id == "":
@@ -34,27 +39,35 @@ def read(id = "") -> None:
     print()
 
 def create() -> None:
+    '''
+    Función para crear un nuevo registro
+    '''
+    
     input_data()
-    message = validate_data()
+    message = data_validation()
     if message == 'ok':
         save()
         utl.systemMessage(f"Registro guardado {db.users_data[user_id]}", "success")
     else:
         utl.systemMessage(f"{message}", "error")
 
-def input_data() -> None:
+def delete() -> None:
     '''
-    Función para el ingreso de datos
+    Función para eliminar un registro
     '''
 
-    global user_id, name, rol, password, confirm_password
+    global user_id
 
-    print(f"{col_sym.YELLOW}Nuevo Usuario{col_sym.WHITE}")
-    user_id = input("Identificación: ").strip()
-    name = input("Nombre: ").strip()
-    rol = input("Rol (Perfil) [1 -> Administrador | 2 -> Operador]: ").strip()
-    password = getpass.getpass("Contraseña: ")
-    confirm_password = getpass.getpass("Confirmar contraseña: ")
+    print(f"{col_sym.YELLOW}Seleccione un usuario del listado{col_sym.WHITE}")
+    read()
+    user_id = input("Documento: ").strip()
+    message = confirm_deletion()
+    if message == 'ok':
+        deleted_record = {"documento": user_id} | db.users_data.pop(user_id)
+        update_file()
+        utl.systemMessage(f"Registro eliminado {deleted_record}", "success")
+    else:
+        utl.systemMessage(f"{message}", "warning")
 
 def save() -> None:
     '''
@@ -73,7 +86,36 @@ def save() -> None:
     file.write(str_record)
     file.close()
 
-def validate_data() -> str:
+def update_file() -> None:
+    '''
+    Función para actualizar el archivo
+    '''
+
+    # Crear el contenido para el archivo
+    content_file = "codigo,nombre,clave,rol\n"
+    for user, user_data in db.users_data.items():
+        content_file += \
+            f"{user},{user_data['nombre']},{user_data['clave']},{user_data['rol']}\n"
+
+    file = open("assets/data_base/usuarios.csv", "w", encoding="utf-8")
+    file.write(content_file)
+    file.close()
+
+def input_data() -> None:
+    '''
+    Función para el ingreso de datos por teclado
+    '''
+
+    global user_id, name, rol, password, confirm_password
+
+    print(f"{col_sym.YELLOW}Nuevo Usuario{col_sym.WHITE}")
+    user_id = input("Documento: ").strip()
+    name = input("Nombre: ").strip()
+    rol = input("Rol (Perfil) [1 -> Administrador | 2 -> Operador]: ").strip()
+    password = getpass.getpass("Contraseña: ")
+    confirm_password = getpass.getpass("Confirmar contraseña: ")
+
+def data_validation() -> str:
     '''
     Función para validación de datos que usa el módulo validations
     '''
@@ -81,13 +123,13 @@ def validate_data() -> str:
     global rol
 
     if len(user_id) != 10:
-        return "La identificación debe contener exactamante 10 dígitos"   
+        return "El documento debe contener exactamante 10 dígitos"   
 
     if not valid.is_number(user_id):
-        return "La identificación solo puede contener caracteres numéricos"
+        return "El documento solo puede contener caracteres numéricos"
     
     if user_id[0] == '0':
-        return "La identificación no puede comenzar con 0"
+        return "El documento no puede comenzar con 0"
 
     if user_id in db.users_data:
         return "Este usuario ya se encuentra registrado"
@@ -109,3 +151,20 @@ def validate_data() -> str:
         return "La contraseña y su confirmación no coinciden"
         
     return 'ok'
+
+def confirm_deletion() -> str:
+    '''
+    Función para confirmar si es posible eliminar y si está seguro de eliminar
+    '''
+    
+    if not user_id in db.users_data:
+        return "El registro especificado no existe"
+
+    if user_id == auth.user_auth["id"]:
+        return "No puede autoeliminarse del sistema"
+
+    resp = input("¿Está seguro de eliminar este registro? [S/N]: ")
+    if resp.lower() == 's':
+        return 'ok'
+    
+    return "Operación cancelada"

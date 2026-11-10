@@ -7,6 +7,10 @@ seq_id = ""
 name = ""
 
 def read(id = "") -> None:
+    '''
+    Función para mostrar uno o todos los registros
+    '''
+    
     print(col_sym.BLUE)
     print("-" * 60)
     print(f"| {'Código':^10} | {'Nombre':^43} |")
@@ -28,24 +32,39 @@ def read(id = "") -> None:
     print()
 
 def create() -> None:
-    if input_data():
+    '''
+    Función para crear un nuevo registro
+    '''
+
+    global seq_id
+
+    input_data()
+    message = data_validation()
+    if message == 'ok':
+        # Establecer autonumérico y guardar datos
+        seq_id = '1' if len(db.stations_data) == 0 else str(len(db.stations_data) + 1)
         save()
         utl.systemMessage(f"Registro guardado {db.stations_data[seq_id]}", "success")
+    else:
+        utl.systemMessage(f"{message}", "error")
 
-def input_data() -> bool:
+def delete() -> None:
     '''
-    Función para el ingreso de datos
+    Función para eliminar un registro
     '''
 
-    global name, seq_id
-    
-    print(f"{col_sym.YELLOW}Nueva Estación{col_sym.WHITE}")
-    name = input("Nombre estación: ").strip()
+    global seq_id
 
-    if validate_data():
-        seq_id = '1' if len(db.stations_data) == 0 else str(len(db.stations_data) + 1)
-        return True
-    return False
+    print(f"{col_sym.YELLOW}Seleccione una estación del listado{col_sym.WHITE}")
+    read()
+    seq_id = input("Código: ").strip()
+    message = confirm_deletion()
+    if message == 'ok':
+        deleted_record = {"código": seq_id} | db.stations_data.pop(seq_id)
+        update_file()
+        utl.systemMessage(f"Registro eliminado {deleted_record}", "success")
+    else:
+        utl.systemMessage(f"{message}", "warning")
 
 def save() -> None:
     '''
@@ -64,16 +83,51 @@ def save() -> None:
     file.write(str_record)
     file.close()
 
-def validate_data() -> bool:
+def update_file() -> None:
+    '''
+    Función para actualizar el archivo
+    '''
+
+    # Crear el contenido para el archivo
+    content_file = "codigo,nombre\n"
+    for seq, station_data in db.stations_data.items():
+        content_file += f"{seq},{station_data['nombre']}\n"
+
+    file = open("assets/data_base/estaciones.csv", "w", encoding="utf-8")
+    file.write(content_file)
+    file.close()
+
+def input_data() -> None:
+    '''
+    Función para el ingreso de datos por teclado
+    '''
+
+    global name
+    
+    print(f"{col_sym.YELLOW}Nueva Estación{col_sym.WHITE}")
+    name = input("Nombre estación: ").strip()
+
+def data_validation() -> str:
     '''
     Función para validación de datos que usa el módulo validations
     '''
-    if valid.is_alphabetic_string(name):
-        return True
-    utl.systemMessage(f"El nombre solo puede contener letras y espacios " +
-                    f"y no puede estar vacío", "error")   
-    return False
 
+    if not valid.is_alphabetic_string(name):
+        return "El nombre solo puede contener letras y espacios y no puede estar vacío"
+    return 'ok'
+
+def confirm_deletion() -> str:
+    '''
+    Función para confirmar si es posible eliminar y si está seguro de eliminar
+    '''
     
+    if not seq_id in db.stations_data:
+        return "El registro especificado no existe"
+
+    resp = input("¿Está seguro de eliminar este registro? [S/N]: ")
+    if resp.lower() == 's':
+        return 'ok'
+    
+    return "Operación cancelada"   
 
     
