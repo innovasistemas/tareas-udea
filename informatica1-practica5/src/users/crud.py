@@ -43,13 +43,32 @@ def create() -> None:
     Función para crear un nuevo registro
     '''
     
-    input_data()
+    input_data("create")
     message = data_validation()
     if message == 'ok':
         save()
         utl.systemMessage(f"Registro guardado {db.users_data[user_id]}", "success")
     else:
         utl.systemMessage(f"{message}", "error")
+
+def update() -> None:
+    '''
+    Función para modificar un registro
+    '''
+
+    select_id()
+    message = confirm_operation('update')
+    if message == 'ok':
+        input_data('update')
+        message = data_validation('update')
+        if message == 'ok':
+            save('update')
+            update_record = {"código": user_id} | db.users_data[user_id]
+            utl.systemMessage(f"Registro actualizado {update_record}", "success")
+        else:
+            utl.systemMessage(f"{message}", "error")
+    else:
+        utl.systemMessage(f"{message}", "warning")
 
 def delete() -> None:
     '''
@@ -58,10 +77,8 @@ def delete() -> None:
 
     global user_id
 
-    print(f"{col_sym.YELLOW}Seleccione un usuario del listado{col_sym.WHITE}")
-    read()
-    user_id = input("Documento: ").strip()
-    message = confirm_deletion()
+    select_id()
+    message = confirm_operation('delete')
     if message == 'ok':
         deleted_record = {"documento": user_id} | db.users_data.pop(user_id)
         update_file()
@@ -69,7 +86,7 @@ def delete() -> None:
     else:
         utl.systemMessage(f"{message}", "warning")
 
-def save() -> None:
+def save(type_operation = "create") -> None:
     '''
     Función para guardar la información (en diccionario y en archivos
     de forma persistente)
@@ -80,11 +97,16 @@ def save() -> None:
         user_id: {"nombre": name, "clave": password, "rol": rol}
     })
 
-    # Agregar registro al archivo csv
-    str_record = f"{user_id},{name},{password},{rol}\n"
-    file = open("assets/data_base/usuarios.csv", "a", encoding="utf-8")
-    file.write(str_record)
-    file.close()
+    if type_operation == 'create':
+        # Agregar registro al archivo csv
+        str_record = f"{user_id},{name},{password},{rol}\n"
+        file = open("assets/data_base/usuarios.csv", "a", encoding="utf-8")
+        file.write(str_record)
+        file.close()
+    else:
+        if user_id == auth.user_auth['id']:
+            auth.user_auth['nombre'] = db.users_data[user_id]['nombre']
+        update_file()
 
 def update_file() -> None:
     '''
@@ -101,21 +123,40 @@ def update_file() -> None:
     file.write(content_file)
     file.close()
 
-def input_data() -> None:
+def input_data(type_operation = "create") -> None:
     '''
     Función para el ingreso de datos por teclado
     '''
 
     global user_id, name, rol, password, confirm_password
 
-    print(f"{col_sym.YELLOW}Nuevo Usuario{col_sym.WHITE}")
-    user_id = input("Documento: ").strip()
+    print(f"{col_sym.YELLOW}Ingresar datos del Usuario{col_sym.WHITE}")
+    if type_operation == 'create':
+        user_id = input("Documento: ").strip()
+    else:
+        print(f"{col_sym.YELLOW}Dato actuales del Usuario{col_sym.WHITE}")
+        read(user_id)
     name = input("Nombre: ").strip()
-    rol = input("Rol (Perfil) [1 -> Administrador | 2 -> Operador]: ").strip()
+    # El usuario conectado no puede cambiar su rol de Administrador 
+    if user_id != auth.user_auth['id']:
+        rol = input("Rol (Perfil) [1 -> Administrador | 2 -> Operador]: ").strip()
+    else: 
+        rol = "1"
     password = getpass.getpass("Contraseña: ")
     confirm_password = getpass.getpass("Confirmar contraseña: ")
 
-def data_validation() -> str:
+def select_id() -> None:
+    '''
+    Función para seleccionar el identificador del archivo
+    '''
+    
+    global user_id
+
+    print(f"{col_sym.YELLOW}Seleccione un usuario del listado{col_sym.WHITE}")
+    read()
+    user_id = input("Documento: ").strip()
+
+def data_validation(type_operation = 'create') -> str:
     '''
     Función para validación de datos que usa el módulo validations
     '''
@@ -131,7 +172,7 @@ def data_validation() -> str:
     if user_id[0] == '0':
         return "El documento no puede comenzar con 0"
 
-    if user_id in db.users_data:
+    if type_operation == 'create' and user_id in db.users_data:
         return "Este usuario ya se encuentra registrado"
             
     if not valid.is_alphabetic_string(name):
@@ -152,18 +193,18 @@ def data_validation() -> str:
         
     return 'ok'
 
-def confirm_deletion() -> str:
+def confirm_operation(type_operation = '') -> str:
     '''
-    Función para confirmar si es posible eliminar y si está seguro de eliminar
+    Función para confirmar si es posible modificar/eliminar y si está seguro de hacerlo
     '''
     
     if not user_id in db.users_data:
         return "El registro especificado no existe"
 
-    if user_id == auth.user_auth["id"]:
+    if type_operation == 'delete' and user_id == auth.user_auth["id"]:
         return "No puede autoeliminarse del sistema"
 
-    resp = input("¿Está seguro de eliminar este registro? [S/N]: ")
+    resp = input("¿Está seguro de realizar esta operación? [S/N]: ")
     if resp.lower() == 's':
         return 'ok'
     

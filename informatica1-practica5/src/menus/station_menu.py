@@ -31,7 +31,7 @@ def station_menu() -> None:
             case "1":
                 station.create()
             case "2":
-                pass
+                station.update()
             case "3":
                 station.delete()
             case "4":

@@ -31,7 +31,7 @@ def user_menu() -> None:
             case "1":
                 user.create()
             case "2":
-                pass
+                user.update()
             case "3":
                 user.delete()
             case "4":

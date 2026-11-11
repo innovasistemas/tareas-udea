@@ -42,23 +42,40 @@ def create() -> None:
     message = data_validation()
     if message == 'ok':
         # Establecer autonumérico y guardar datos
-        seq_id = '1' if len(db.stations_data) == 0 else str(len(db.stations_data) + 1)
+        seq_id =  \
+            '1' if len(db.stations_data) == 0 \
+            else str(int(list(db.stations_data.keys())[-1]) + 1)
         save()
         utl.systemMessage(f"Registro guardado {db.stations_data[seq_id]}", "success")
     else:
         utl.systemMessage(f"{message}", "error")
+
+def update() -> None:
+    '''
+    Función para modificar un registro
+    '''
+
+    select_id()
+    message = confirm_operation()
+    if message == 'ok':
+        input_data()
+        message = data_validation()
+        if message == 'ok':
+            save('update')
+            update_record = {"código": seq_id} | db.stations_data[seq_id]
+            utl.systemMessage(f"Registro actualizado {update_record}", "success")
+        else:
+                utl.systemMessage(f"{message}", "error")
+    else:
+        utl.systemMessage(f"{message}", "warning")
 
 def delete() -> None:
     '''
     Función para eliminar un registro
     '''
 
-    global seq_id
-
-    print(f"{col_sym.YELLOW}Seleccione una estación del listado{col_sym.WHITE}")
-    read()
-    seq_id = input("Código: ").strip()
-    message = confirm_deletion()
+    select_id()
+    message = confirm_operation()
     if message == 'ok':
         deleted_record = {"código": seq_id} | db.stations_data.pop(seq_id)
         update_file()
@@ -66,7 +83,7 @@ def delete() -> None:
     else:
         utl.systemMessage(f"{message}", "warning")
 
-def save() -> None:
+def save(type_operation = "create") -> None:
     '''
     Función para guardar la información (en diccionario y en archivos
     de forma persistente)
@@ -77,11 +94,14 @@ def save() -> None:
         seq_id: {"nombre": name}
     })
 
-    # Agregar registro al archivo csv
-    str_record = f"{seq_id},{name}\n"
-    file = open("assets/data_base/estaciones.csv", "a", encoding="utf-8")
-    file.write(str_record)
-    file.close()
+    if type_operation == "create":
+        # Agregar registro al archivo csv
+        str_record = f"{seq_id},{name}\n"
+        file = open("assets/data_base/estaciones.csv", "a", encoding="utf-8")
+        file.write(str_record)
+        file.close()
+    else:
+        update_file()
 
 def update_file() -> None:
     '''
@@ -104,8 +124,19 @@ def input_data() -> None:
 
     global name
     
-    print(f"{col_sym.YELLOW}Nueva Estación{col_sym.WHITE}")
+    print(f"{col_sym.YELLOW}Ingresar datos de la Estación{col_sym.WHITE}")
     name = input("Nombre estación: ").strip()
+
+def select_id() -> None:
+    '''
+    Función para seleccionar el identificador del archivo
+    '''
+    
+    global seq_id
+
+    print(f"{col_sym.YELLOW}Seleccione una estación del listado{col_sym.WHITE}")
+    read()
+    seq_id = input("Código: ").strip()
 
 def data_validation() -> str:
     '''
@@ -116,18 +147,16 @@ def data_validation() -> str:
         return "El nombre solo puede contener letras y espacios y no puede estar vacío"
     return 'ok'
 
-def confirm_deletion() -> str:
+def confirm_operation() -> str:
     '''
-    Función para confirmar si es posible eliminar y si está seguro de eliminar
+    Función para confirmar si es posible editar/eliminar y si está seguro de hacerlo
     '''
     
     if not seq_id in db.stations_data:
         return "El registro especificado no existe"
 
-    resp = input("¿Está seguro de eliminar este registro? [S/N]: ")
+    resp = input("¿Está seguro de editar este registro? [S/N]: ")
     if resp.lower() == 's':
         return 'ok'
     
     return "Operación cancelada"   
-
-    
