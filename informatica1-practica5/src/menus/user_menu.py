@@ -1,7 +1,7 @@
 import src.utils.util as utl
 import src.utils.colors_symbols as col_sym
-import src.users.authentication as auth
-import src.users.crud as user 
+import src.models.users.authentication as auth
+import src.models.users.crud as user 
 
 def user_menu() -> None:
     '''

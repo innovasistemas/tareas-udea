@@ -1,6 +1,6 @@
 import src.utils.util as utl
 import src.utils.colors_symbols as col_sym
-import src.users.authentication as auth 
+import src.models.users.authentication as auth 
 import src.menus.admin_menu as adm_mnu
 import src.menus.operator_menu as oper_mnu
 import src.menus.guest_menu as gue_mnu

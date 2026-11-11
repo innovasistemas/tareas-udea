@@ -1,5 +1,8 @@
+import json
+
 users_data = {}
 stations_data = {}
+measures_data = {}
 
 def load_data_csv():
     '''
@@ -39,4 +42,16 @@ def load_data_csv():
         l += 1
     file.close()
 
+def load_data_json() -> None:
+    '''
+    Función para cargar los archivos json en memoria
+    '''
+    
+    global measures_data
+
+    file = open("assets/data_base/registros.json", "r", encoding="utf-8")
+    measures_data.update(json.load(file))
+    file.close()
+
 load_data_csv()
+load_data_json()

@@ -1,6 +1,7 @@
 import src.utils.util as utl
 import src.utils.colors_symbols as col_sym
-import src.users.authentication as auth
+import src.models.users.authentication as auth
+import src.models.measures.crud as measure
 
 def operator_menu() -> None:
     '''
@@ -27,6 +28,6 @@ def operator_menu() -> None:
             case "1":
                 pass
             case "2":
-                pass
+                measure.read()
             case _:
                 utl.systemMessage("Opción no válida", "error")
