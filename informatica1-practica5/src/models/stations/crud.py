@@ -56,7 +56,7 @@ def update() -> None:
     '''
 
     select_id()
-    message = confirm_operation()
+    message = confirm_operation('update')
     if message == 'ok':
         input_data()
         message = data_validation()
@@ -75,7 +75,7 @@ def delete() -> None:
     '''
 
     select_id()
-    message = confirm_operation()
+    message = confirm_operation('delete')
     if message == 'ok':
         deleted_record = {"código": seq_id} | db.stations_data.pop(seq_id)
         update_file()
@@ -147,13 +147,16 @@ def data_validation() -> str:
         return "El nombre solo puede contener letras y espacios y no puede estar vacío"
     return 'ok'
 
-def confirm_operation() -> str:
+def confirm_operation(type_operation = '') -> str:
     '''
     Función para confirmar si es posible editar/eliminar y si está seguro de hacerlo
     '''
     
     if not seq_id in db.stations_data:
         return "El registro especificado no existe"
+
+    if type_operation == 'delete' and seq_id in db.measures_data:
+        return "No puede eliminar esta estación porque tiene medidas asociadas "
 
     resp = input("¿Está seguro de editar este registro? [S/N]: ")
     if resp.lower() == 's':
