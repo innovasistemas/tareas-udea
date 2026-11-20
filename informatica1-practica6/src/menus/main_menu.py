@@ -18,7 +18,7 @@ def main_menu() -> None:
         print(f"|  {col_sym.RED}1.{col_sym.WHITE} Ver Estudiantes          |")
         print(f"|  {col_sym.RED}2.{col_sym.WHITE} Ver Cursos               |")
         print(f"|  {col_sym.RED}3.{col_sym.WHITE} Ver Notas                |")
-        print(f"|  {col_sym.RED}4.{col_sym.WHITE} Eliminar Estudiantes     |")
+        print(f"|  {col_sym.RED}4.{col_sym.WHITE} Eliminar Estudiante      |")
         print(f"|  {col_sym.RED}5.{col_sym.WHITE} Mejor Nota Estudiante    |")
         print(f"|  {col_sym.RED}6.{col_sym.WHITE} Ordenar por Promedios    |")
         print(f"|  {col_sym.RED}7.{col_sym.WHITE} Ordenar por Cant. Cursos |")
@@ -34,24 +34,41 @@ def main_menu() -> None:
             case "2":
                 array.show_list(db.courses, "Cursos")
             case "3":
-                array.student_average()
+                array.student_average_count()
                 array.show_grades()
             case "4":
-                datum = input("Estudiante a eliminar: ").strip()
-                if datum in db.students:
-                    array.delete_item(db.students.index(datum))
-                    utl.systemMessage(f"El estudiante [id={datum}] y sus notas " +
-                                      "se eliminaron correctamente", "success")
+                if db.m > 0:
+                    datum = input("Estudiante a eliminar: ").strip()
+                    if datum in db.students:
+                        array.delete_item(db.students.index(datum))
+                        utl.systemMessage(f"El estudiante [id={datum}] y sus notas " +
+                                        "se eliminaron correctamente", "success")
+                    else:
+                        utl.systemMessage(f"El estudiante [id={datum}] " + 
+                                          f"no se encuentra registrado", "warning")
                 else:
-                    utl.systemMessage(f"El estudiante [id={datum}] " + 
-                                      f"no se encuentra registrado", "warning")
+                   utl.systemMessage(f"No hay estudiantes registrados", "warning") 
             case "5":
-                pass
+                if db.m > 0:
+                    datum = input("Consultar mejor nota del estudiante: ").strip()
+                    if datum in db.students:
+                        maximum_grade = array.max_grade_student(db.students.index(datum))
+                        utl.systemMessage(f"Estudiante [id={datum}] \n" +  
+                                          f"Mejor nota: [nota={maximum_grade['nota']}] " +
+                                          f"- Curso: [cod={maximum_grade['codigo']}] ", \
+                                          "success")
+                    else:
+                        utl.systemMessage(f"El estudiante [id={datum}] " + 
+                                          f"no se encuentra registrado", "warning")
+                else:
+                   utl.systemMessage(f"No hay estudiantes registrados", "warning") 
             case "6":
-                array.student_average()
+                array.student_average_count()
                 array.sort_bubble_desc()
                 utl.systemMessage("Datos ordenados (método burbuja)")
             case "7":
-                pass
+                array.student_average_count()
+                array.sort_selection()
+                utl.systemMessage("Datos ordenados (método selección)")
             case _:
                 utl.systemMessage("Opción no válida", "error")
