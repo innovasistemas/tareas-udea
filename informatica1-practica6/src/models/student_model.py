@@ -62,8 +62,8 @@ def average_count_grades_student(list_data, index) -> None:
     s = 0
     c = 0
     for item in list_data:
-        if item >= 0:
-            s += item
+        if float(item) >= 0:
+            s += float(item)
             c += 1
     averages[index] = s / c if c > 0 else -1
     count_courses[index] = c
