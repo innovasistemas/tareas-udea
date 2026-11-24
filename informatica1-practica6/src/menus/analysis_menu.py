@@ -1,3 +1,4 @@
+import time
 import src.utils.util as utl
 import src.utils.colors_symbols as col_sym
 import src.models.analysis_model as anl_model
@@ -45,26 +46,16 @@ def analysis_menu() -> None:
                 else:
                     utl.systemMessage("No ha llenado el arreglo", "warning")
             case "3":
-                if anl_model.n > 0:
-                    anl_model.sort_bubble()
-                    utl.systemMessage("Arreglo ordenado por el método de Burbuja")
-                else:
-                    utl.systemMessage("No ha llenado el arreglo", "warning")
+                anl_model.sort("Burbuja")
+                anl_model.complexity('Burbuja')
             case "4":
-                if anl_model.n > 0:
-                    anl_model.sort_selection()
-                    utl.systemMessage("Arreglo ordenado por el método de Selección")
-                else:
-                    utl.systemMessage("No ha llenado el arreglo", "warning")
+                anl_model.sort("Selección")
+                anl_model.complexity('Selección')
             case "5":
-                pass
+                anl_model.sort("Inserción")
             case "6":
-                pass
+                anl_model.sort("Fusión")
             case "7":
-                if anl_model.n > 0:
-                    anl_model.sort_random()
-                    utl.systemMessage("Arreglo dispuesto aleatoriamente")
-                else:
-                    utl.systemMessage("No ha llenado el arreglo", "warning")
+                anl_model.sort("Aleatorio")
             case _:
                 utl.systemMessage("Opción no válida", "error")
