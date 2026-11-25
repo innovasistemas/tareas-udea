@@ -55,8 +55,8 @@ def load_data_csv():
             aux_data = line.split(",")
             # Quitar el \n del final de la línea en el archivo csv
             aux_data[1] = aux_data[1][:len(aux_data[1]) - 1]
-            years.append(aux_data[0])
-            enrolled_students.append(aux_data[1])
+            years.append(int(aux_data[0]))
+            enrolled_students.append(int(aux_data[1]))
         l += 1
     file.close()
 
