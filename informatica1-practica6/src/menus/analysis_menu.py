@@ -47,12 +47,13 @@ def analysis_menu() -> None:
                     utl.systemMessage("No ha llenado el arreglo", "warning")
             case "3":
                 anl_model.sort("Burbuja")
-                anl_model.complexity('Burbuja')
+                # anl_model.complexity('Burbuja')
             case "4":
                 anl_model.sort("Selección")
-                anl_model.complexity('Selección')
+                # anl_model.complexity('Selección')
             case "5":
                 anl_model.sort("Inserción")
+                # anl_model.complexity('Inserción')
             case "6":
                 anl_model.sort("Fusión")
             case "7":
