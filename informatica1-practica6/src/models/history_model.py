@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import src.utils.colors_symbols as col_sym
 import src.config.database as db
 
-def show_data(y: list, title) -> None:
+def show_data(y: list, title: str) -> None:
     # Encabezado
     print("-" * 25)
     print(f"| {col_sym.BRIGHT_CYAN}{title:^20} {col_sym.WHITE} |")
@@ -38,13 +38,13 @@ def MAE(y: list) -> float:
         s_mae += abs(db.enrolled_students[i] - y[i])
     return s_mae / db.h
 
-def calculation_a() -> float:
+def calculate_slope() -> float:
     '''
     Calcular pendiente
     '''
     return (max(db.enrolled_students) - min(db.enrolled_students))  / (max(db.years) - min(db.years))
 
-def calculation_b(a: float) -> float:
+def calculate_intercept(a: float) -> float:
     '''
     Calcular intercepto
     '''
@@ -57,7 +57,7 @@ def generate_plot(
         years: list, students: list, a: float, b: float, future_year: int, 
         estimation: float, mae: float, 
         filename: str = "assets/graphs/grafica_regresion.png"
-):
+) -> None:
     # 1. Crear el lienzo de la gráfica
     plt.figure(figsize=(10, 6))
     

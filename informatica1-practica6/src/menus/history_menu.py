@@ -32,8 +32,8 @@ def history_menu() -> None:
                 his_model.show_data(db.enrolled_students, "Histórico Matrículas")
             case "2":
                 print("Parámetros de ajuste a la regresión lineal")
-                a = his_model.calculation_a()
-                b = his_model.calculation_b(a)
+                a = his_model.calculate_slope()
+                b = his_model.calculate_intercept(a)
                 y_estim = his_model.linear_regression(db.years, a, b)
                 mae = his_model.MAE(y_estim)
                 utl.systemMessage(f"a = {round(a, 2)}\nb = {round(b, 2)}" \
