@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import src.utils.colors_symbols as col_sym
 import src.config.database as db
 
@@ -51,3 +52,34 @@ def calculation_b(a: float) -> float:
 
 def estimating_students(x: int, a: float, b: float) -> float: 
     return a * x + b
+
+def generate_plot(
+        years: list, students: list, a: float, b: float, future_year: int, 
+        estimation: float, mae: float, 
+        filename: str = "assets/graphs/grafica_regresion.png"
+):
+    # 1. Crear el lienzo de la gráfica
+    plt.figure(figsize=(10, 6))
+    
+    # 2. Dibujar los datos históricos reales (puntos azules)
+    plt.scatter(years, students, color="blue", label="Datos históricos reales")
+    
+    # 3. Dibujar la línea de regresión desde el año inicial hasta el año futuro
+    x_linea = years + [future_year]
+    y_linea = [a * x + b for x in x_linea]
+    plt.plot(x_linea, y_linea, color="red", label=f"Regresión lineal (y = {a:.2f}x + {b:+.2f}) | MAE: {mae:.2f}")
+    
+    # 4. Resaltar el punto específico estimado para el futuro (punto verde grande)
+    plt.scatter([future_year], [estimation], color="green", s=100, zorder=5, label=f"Estimación {future_year}: {round(estimation)} est.")
+    
+    # 5. Personalizar títulos, ejes y leyenda
+    plt.title("Proyección de Estudiantes Matriculados")
+    plt.xlabel("Año")
+    plt.ylabel("Cantidad de Estudiantes")
+    plt.legend()
+    plt.grid(True, linestyle="--", alpha=0.6)
+    
+    # 6. Guardar la gráfica en un archivo (IMPORTANTE: hacerlo antes de plt.show())
+    plt.savefig(filename, dpi=300, bbox_inches="tight")
+    plt.show()
+    plt.close()  # Libera la memoria de la figura

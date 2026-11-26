@@ -42,11 +42,14 @@ def history_menu() -> None:
             case "3":
                 print("Estimar estudiantes matriculados")
                 try:
-                    year = int(input("Ingrese un año futuro: "))
-                    if year > max(db.years):
-                        estimation = his_model.estimating_students(year, a, b)
-                        utl.systemMessage(f"Estudiantes estimados para el año {year}: {estimation:.0f}" \
-                                          f"\nMean Absolute Error: MAE = {mae:.2f}" )
+                    future_year = int(input("Ingrese un año futuro: "))
+                    if future_year > max(db.years):
+                        estimation = his_model.estimating_students(future_year, a, b)
+                        his_model.generate_plot(db.years, db.enrolled_students, a, b, future_year, estimation, mae)
+
+                        utl.systemMessage(f"Estudiantes estimados para el año {future_year}: {estimation:.0f}" \
+                                          f"\nMean Absolute Error: MAE = {mae:.2f}" \
+                                          f"\nGráfica guardada correctamente")
                     else:
                         utl.systemMessage(f"Año no válido. Debe ingresar un año mayor a {max(db.years)}", "warning")
                 except ValueError:
